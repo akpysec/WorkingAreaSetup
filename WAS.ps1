@@ -195,6 +195,7 @@ do
 				"CONSULTANT_NAME" = $consultant_name
 				"PROJECT_NAME" = $project_name
 				"YEAR" = $year
+				"MONTH" = $month
 				"SYSTEM_MANAGER" = $system_manager_name
 				"CLIENT_NAME" = $client_firm_name
 				}
