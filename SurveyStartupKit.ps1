@@ -21,9 +21,13 @@ function Show-Menu
 # Variables
 $project_name = read-host "Enter Project name"
 $client_firm_name = read-host "Enter client firm name"
+Write-Host "##########################" -ForegroundColor Magenta
+Write-Host "Available Report Paths - "  -ForegroundColor Magenta
+Write-Host "##########################" -ForegroundColor Magenta
+Get-Childitem ".\report_templates" -recurse -Directory | % {Write-Host $_.FullName -ForegroundColor Green}
+Write-Host "----------------------------------------------------------" -ForegroundColor Magenta
 $templates_path = read-host "Enter reports templates path"
 $year = '2021'
-$month = 'June'
 $folder_already_exists = 'folder already exists'
 $file_already_exists = 'file already exists'
 
@@ -62,7 +66,7 @@ do
 				}
 			 if ( -not (Test-Path -Path $project_name\$client_firm_name'_'$project_name'_ARCH_'$year'_01.docx' -PathType Leaf)) {
 					Write-Host 'Created Template Report in ' $project_name 'Directory' -ForegroundColor Green
-					Copy-Item $templates_path'ARCH.docx' $project_name\$client_firm_name'_'$project_name'_ARCH_'$year'_01.docx' | out-null
+					Copy-Item $templates_path'\ARCH.docx' $project_name\$client_firm_name'_'$project_name'_ARCH_'$year'_01.docx' | out-null
 				}	else {
 				    Write-Host $project_name\$client_firm_name'_'$project_name'_ARCH_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
 				}
@@ -95,13 +99,13 @@ do
 				}
 			 if ( -not (Test-Path -Path $project_name\$client_firm_name'_'$project_name'_FW_'$year'_01.docx' -PathType Leaf)) {
 					Write-Host 'Copied template file in Project Directory' -ForegroundColor Green
-					Copy-Item $templates_path'FW.docx' $project_name\$client_firm_name'_'$project_name'_FW_'$year'_01.docx' | out-null
+					Copy-Item $templates_path'\FW.docx' $project_name\$client_firm_name'_'$project_name'_FW_'$year'_01.docx' | out-null
 				}	else {
 				    Write-Host $project_name\$client_firm_name'_'$project_name'_FW_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
 				}
 			 if ( -not (Test-Path -Path $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_FW_'$year'_01.docx' -PathType Leaf)) {
 					Write-Host 'Copied template file High Alert in Project Directory' -ForegroundColor Green
-					Copy-Item $templates_path'HIGH_ALERT.docx' $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_FW_'$year'_01.docx' | out-null
+					Copy-Item $templates_path'\HIGH_ALERT.docx' $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_FW_'$year'_01.docx' | out-null
 				}	else {
 				    Write-Host $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_FW_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
 				}
@@ -133,13 +137,13 @@ do
 				}
 			 if ( -not (Test-Path -Path $project_name\$client_firm_name'_'$project_name'_HRD_WIN_'$year'_01.docx' -PathType Leaf)) {
 					Write-Host 'Copied template file in Project Directory' -ForegroundColor Green
-					Copy-Item $templates_path'HRD_WIN.docx' $project_name\$client_firm_name'_'$project_name'_HRD_WIN_'$year'_01.docx' | out-null
+					Copy-Item $templates_path'\HRD_WIN.docx' $project_name\$client_firm_name'_'$project_name'_HRD_WIN_'$year'_01.docx' | out-null
 				}	else {
 				    Write-Host $project_name\$client_firm_name'_'$project_name'_HRD_WIN_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
 				}
 			 if ( -not (Test-Path -Path $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_HRD_WIN_'$year'_01.docx' -PathType Leaf)) {
 					Write-Host 'Copied template file High Alert in Project Directory' -ForegroundColor Green
-					Copy-Item $templates_path'HIGH_ALERT.docx' $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_HRD_WIN_'$year'_01.docx' | out-null
+					Copy-Item $templates_path'\HIGH_ALERT.docx' $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_HRD_WIN_'$year'_01.docx' | out-null
 				}	else {
 				    Write-Host $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_HRD_WIN_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
 				}
@@ -171,21 +175,23 @@ do
 				}
 			 if ( -not (Test-Path -Path $project_name\$client_firm_name'_'$project_name'_HRD_RHEL_'$year'_01.docx' -PathType Leaf)) {
 					Write-Host 'Copied template file in Project Directory' -ForegroundColor Green
-					Copy-Item $templates_path'HRD_RHEL.docx' $project_name\$client_firm_name'_'$project_name'_HRD_RHEL_'$year'_01.docx' | out-null
+					Copy-Item $templates_path'\HRD_RHEL.docx' $project_name\$client_firm_name'_'$project_name'_HRD_RHEL_'$year'_01.docx' | out-null
 				}	else {
 				    Write-Host $project_name\$client_firm_name'_'$project_name'_HRD_RHEL_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
 				}
 			 if ( -not (Test-Path -Path $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_HRD_RHEL_'$year'_01.docx' -PathType Leaf)) {
 					Write-Host 'Copied template file High Alert in Project Directory' -ForegroundColor Green
-					Copy-Item $templates_path'HIGH_ALERT.docx' $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_HRD_RHEL_'$year'_01.docx' | out-null
+					Copy-Item $templates_path'\HIGH_ALERT.docx' $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_HRD_RHEL_'$year'_01.docx' | out-null
 				}	else {
 				    Write-Host $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_HRD_RHEL_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
 				}
          }		 
 		 'U' {
 				$date_today = read-host "Enter Date you want to be displayed in the template report"
-				$consultant_name = read-host "Enter a Consultant Name you want to be displayed in the template report"
-				$system_manager_name = read-host "Enter a Systems Manager Name you want to be displayed in the template report"
+				$month = read-host "Enter Month you want to be displayed in the template report (he)"
+				$client_firm_name_in_template = read-host "Enter Clients name you want to be displayed in the template report (he)"
+				$consultant_name = read-host "Enter a Consultant Name you want to be displayed in the template report (he)"
+				$system_manager_name = read-host "Enter a Systems Manager Name you want to be displayed in the template report (he)"
 				$templates_copied_to_dst_path = $project_name # multi-folders: "C:\fso1*", "C:\fso2*"
 				$fileType = "*.docx"           # *.docx will take all .doc* files
 
@@ -197,7 +203,7 @@ do
 				"YEAR" = $year
 				"MONTH" = $month
 				"SYSTEM_MANAGER" = $system_manager_name
-				"CLIENT_NAME" = $client_firm_name
+				"CLIENT_NAME" = $client_firm_name_in_template
 				}
 
 				$word = New-Object -ComObject Word.Application
