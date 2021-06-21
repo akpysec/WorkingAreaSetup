@@ -20,6 +20,7 @@ function Show-Menu
 
 # Variables
 $project_name = read-host "Enter Project name"
+$where_to_create = read-host "Enter path where to create the Project" $project_name
 $client_firm_name = read-host "Enter client firm name"
 Write-Host "##########################" -ForegroundColor Magenta
 Write-Host "Available Report Paths - "  -ForegroundColor Magenta
@@ -30,7 +31,7 @@ $templates_path = read-host "Enter reports templates path"
 $year = '2021'
 $folder_already_exists = 'folder already exists'
 $file_already_exists = 'file already exists'
-
+$arch_vsdx_file_path = Get-Childitem ".\report_templates" -File
 
 do
  {
@@ -39,151 +40,157 @@ do
      switch ($selection)
      {
          '1' {
-			 if ( -not (Test-Path -Path $project_name -PathType Container)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name -PathType Container)) {
 					Write-Host 'Created Project Directory - ' $project_name -ForegroundColor Green
-					New-Item -Path $project_name -Type Directory | out-null
+					New-Item -Path $where_to_create\$project_name -Type Directory | out-null
 				}	else {
-				    Write-Host $project_name $folder_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name $folder_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$project_name'_ARCH' -PathType Container)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$project_name'_ARCH' -PathType Container)) {
 					Write-Host 'Created Sub Directory in Projects Folder for ARCH' -ForegroundColor Green
-					New-Item -Path $project_name\$project_name'_ARCH' -Type Directory | out-null
+					New-Item -Path $where_to_create\$project_name\$project_name'_ARCH' -Type Directory | out-null
 				}	else {
-				    Write-Host $project_name\$project_name'_ARCH' $folder_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$project_name'_ARCH' $folder_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\'Servers_INFO.txt' -PathType Leaf)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\'Servers_INFO.txt' -PathType Leaf)) {
 					Write-Host 'Created Servers INFO file in Project Directory' -ForegroundColor Green
-					New-Item -Path $project_name\'Servers_INFO.txt' -ItemType File | out-null
-					Add-Content -Path $project_name\'Servers_INFO.txt' -Value "ADD HERE: HOSTNAME and IP addresses of the servers for convenience"
+					New-Item -Path $where_to_create\$project_name\'Servers_INFO.txt' -ItemType File | out-null
+					Add-Content -Path $where_to_create\$project_name\'Servers_INFO.txt' -Value "ADD HERE: HOSTNAME and IP addresses of the servers for convenience"
 				}	else {
-				    Write-Host $project_name\'Servers_INFO.txt' $file_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\'Servers_INFO.txt' $file_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$project_name'_ARCH\'$client_firm_name'_'$project_name'_ARCH_'$year'_01.vsdx' -PathType Leaf)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$project_name'_ARCH\'$client_firm_name'_'$project_name'_ARCH_'$year'_01.vsdx' -PathType Leaf)) {
 					Write-Host 'Created Visio empty file at Directory ARCH' -ForegroundColor Green
-					New-Item -Path $project_name\$project_name'_ARCH\'$client_firm_name'_'$project_name'_ARCH_'$year'_01.vsdx' -ItemType File | out-null
+					Copy-Item -Path $arch_vsdx_file_path.FullName $where_to_create\$project_name\$project_name'_ARCH\'$client_firm_name'_'$project_name'_ARCH_'$year'_01.vsdx' | out-null
 				}	else {
-				    Write-Host $project_name\$project_name'_ARCH\'$client_firm_name'_'$project_name'_ARCH_'$year'_01.vsdx' $file_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$project_name'_ARCH\'$client_firm_name'_'$project_name'_ARCH_'$year'_01.vsdx' $file_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$client_firm_name'_'$project_name'_ARCH_'$year'_01.docx' -PathType Leaf)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$client_firm_name'_'$project_name'_ARCH_'$year'_01.docx' -PathType Leaf)) {
 					Write-Host 'Created Template Report in ' $project_name 'Directory' -ForegroundColor Green
-					Copy-Item $templates_path'\ARCH.docx' $project_name\$client_firm_name'_'$project_name'_ARCH_'$year'_01.docx' | out-null
+					Copy-Item $templates_path'\ARCH.docx' $where_to_create\$project_name\$client_firm_name'_'$project_name'_ARCH_'$year'_01.docx' | out-null
 				}	else {
-				    Write-Host $project_name\$client_firm_name'_'$project_name'_ARCH_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$client_firm_name'_'$project_name'_ARCH_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
+				}
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_specify-type_ARCH_'$year'_01.docx' -PathType Leaf)) {
+					Write-Host 'Copied template file High Alert in Project Directory' -ForegroundColor Green
+					Copy-Item $templates_path'\HIGH_ALERT.docx' $where_to_create\$project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_specify-type_ARCH_'$year'_01.docx' | out-null
+				}	else {
+				    Write-Host $where_to_create\$project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_specify-type_ARCH_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
 				}
          }
 		 '2' {
-			 if ( -not (Test-Path -Path $project_name -PathType Container)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name -PathType Container)) {
 					Write-Host 'Created Project Directory - ' $project_name -ForegroundColor Green
-					New-Item -Path $project_name -Type Directory | out-null
+					New-Item -Path $where_to_create\$project_name -Type Directory | out-null
 				}	else {
-				    Write-Host $project_name $folder_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name $folder_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$project_name'_FW' -PathType Container)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$project_name'_FW' -PathType Container)) {
 					Write-Host 'Created Sub Directory in Projects Folder for FW' -ForegroundColor Green
-					New-Item -Path $project_name\$project_name'_FW' -Type Directory | out-null
+					New-Item -Path $where_to_create\$project_name\$project_name'_FW' -Type Directory | out-null
 				}	else {
-				    Write-Host $project_name\$project_name'_FW' $folder_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$project_name'_FW' $folder_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$project_name'_FW\Evidence' -PathType Container)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$project_name'_FW\Evidence' -PathType Container)) {
 					Write-Host 'Created Evidence folder in Projects Sub Directory' -ForegroundColor Green
-					New-Item -Path $project_name\$project_name'_FW\Evidence' -Type Directory | out-null
+					New-Item -Path $where_to_create\$project_name\$project_name'_FW\Evidence' -Type Directory | out-null
 				}	else {
-				    Write-Host $project_name\$project_name'_FW\Evidence' $folder_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$project_name'_FW\Evidence' $folder_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\'Servers_INFO.txt' -PathType Leaf)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\'Servers_INFO.txt' -PathType Leaf)) {
 					Write-Host 'Created Servers INFO file in Project Directory' -ForegroundColor Green
-					New-Item -Path $project_name\'Servers_INFO.txt' -ItemType File | out-null
-					Add-Content -Path $project_name\'Servers_INFO.txt' -Value "ADD HERE: HOSTNAME and IP addresses of the servers for convenience"
+					New-Item -Path $where_to_create\$project_name\'Servers_INFO.txt' -ItemType File | out-null
+					Add-Content -Path $where_to_create\$project_name\'Servers_INFO.txt' -Value "ADD HERE: HOSTNAME and IP addresses of the servers for convenience"
 				}	else {
-				    Write-Host $project_name\'Servers_INFO.txt' $file_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\'Servers_INFO.txt' $file_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$client_firm_name'_'$project_name'_FW_'$year'_01.docx' -PathType Leaf)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$client_firm_name'_'$project_name'_FW_'$year'_01.docx' -PathType Leaf)) {
 					Write-Host 'Copied template file in Project Directory' -ForegroundColor Green
-					Copy-Item $templates_path'\FW.docx' $project_name\$client_firm_name'_'$project_name'_FW_'$year'_01.docx' | out-null
+					Copy-Item $templates_path'\FW.docx' $where_to_create\$project_name\$client_firm_name'_'$project_name'_FW_'$year'_01.docx' | out-null
 				}	else {
-				    Write-Host $project_name\$client_firm_name'_'$project_name'_FW_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$client_firm_name'_'$project_name'_FW_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_FW_'$year'_01.docx' -PathType Leaf)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_specify-type_FW_'$year'_01.docx' -PathType Leaf)) {
 					Write-Host 'Copied template file High Alert in Project Directory' -ForegroundColor Green
-					Copy-Item $templates_path'\HIGH_ALERT.docx' $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_FW_'$year'_01.docx' | out-null
+					Copy-Item $templates_path'\HIGH_ALERT.docx' $where_to_create\$project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_specify-type_FW_'$year'_01.docx' | out-null
 				}	else {
-				    Write-Host $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_FW_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_specify-type_FW_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
 				}
          } 
 		 '3' {
-			 if ( -not (Test-Path -Path $project_name -PathType Container)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name -PathType Container)) {
 					Write-Host 'Created Project Directory - ' $project_name -ForegroundColor Green
-					New-Item -Path $project_name -Type Directory | out-null
+					New-Item -Path $where_to_create\$project_name -Type Directory | out-null
 				}	else {
-				    Write-Host $project_name $folder_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name $folder_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$project_name'_HRD_WIN' -PathType Container)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$project_name'_HRD_WIN' -PathType Container)) {
 					Write-Host 'Created Sub Directory in Projects Folder for HRD-WIN' -ForegroundColor Green
-					New-Item -Path $project_name\$project_name'_HRD_WIN' -Type Directory | out-null
+					New-Item -Path $where_to_create\$project_name\$project_name'_HRD_WIN' -Type Directory | out-null
 				}	else {
-				    Write-Host $project_name\$project_name'_HRD_WIN' $folder_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$project_name'_HRD_WIN' $folder_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$project_name'_HRD_WIN\Evidence' -PathType Container)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$project_name'_HRD_WIN\Evidence' -PathType Container)) {
 					Write-Host 'Created Evidence folder in Projects Sub Directory' -ForegroundColor Green
-					New-Item -Path $project_name\$project_name'_HRD_WIN\Evidence' -Type Directory | out-null
+					New-Item -Path $where_to_create\$project_name\$project_name'_HRD_WIN\Evidence' -Type Directory | out-null
 				}	else {
-				    Write-Host $project_name\$project_name'_HRD_WIN\Evidence' $folder_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$project_name'_HRD_WIN\Evidence' $folder_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$project_name'_HRD_WIN\Recieved_Script_Outputs' -PathType Container)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$project_name'_HRD_WIN\Recieved_Script_Outputs' -PathType Container)) {
 					Write-Host 'Created folder for Recieved Script Outputs in Projects Sub Directory' -ForegroundColor Green
-					New-Item -Path $project_name\$project_name'_HRD_WIN\Recieved_Script_Outputs' -Type Directory | out-null
+					New-Item -Path $where_to_create\$project_name\$project_name'_HRD_WIN\Recieved_Script_Outputs' -Type Directory | out-null
 				}	else {
-				    Write-Host $project_name\$project_name'_HRD_WIN\Recieved_Script_Outputs' $folder_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$project_name'_HRD_WIN\Recieved_Script_Outputs' $folder_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$client_firm_name'_'$project_name'_HRD_WIN_'$year'_01.docx' -PathType Leaf)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$client_firm_name'_'$project_name'_HRD_WIN_'$year'_01.docx' -PathType Leaf)) {
 					Write-Host 'Copied template file in Project Directory' -ForegroundColor Green
-					Copy-Item $templates_path'\HRD_WIN.docx' $project_name\$client_firm_name'_'$project_name'_HRD_WIN_'$year'_01.docx' | out-null
+					Copy-Item $templates_path'\HRD_WIN.docx' $where_to_create\$project_name\$client_firm_name'_'$project_name'_HRD_WIN_'$year'_01.docx' | out-null
 				}	else {
-				    Write-Host $project_name\$client_firm_name'_'$project_name'_HRD_WIN_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$client_firm_name'_'$project_name'_HRD_WIN_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_HRD_WIN_'$year'_01.docx' -PathType Leaf)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_specify-type_HRD_WIN_'$year'_01.docx' -PathType Leaf)) {
 					Write-Host 'Copied template file High Alert in Project Directory' -ForegroundColor Green
-					Copy-Item $templates_path'\HIGH_ALERT.docx' $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_HRD_WIN_'$year'_01.docx' | out-null
+					Copy-Item $templates_path'\HIGH_ALERT.docx' $where_to_create\$project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_specify-type_HRD_WIN_'$year'_01.docx' | out-null
 				}	else {
-				    Write-Host $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_HRD_WIN_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_specify-type_HRD_WIN_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
 				}
 		 }
 		 '4' {
-			 if ( -not (Test-Path -Path $project_name -PathType Container)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name -PathType Container)) {
 					Write-Host 'Created Project Directory - ' $project_name -ForegroundColor Green
-					New-Item -Path $project_name -Type Directory | out-null
+					New-Item -Path $where_to_create\$project_name -Type Directory | out-null
 				}	else {
-				    Write-Host $project_name $folder_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name $folder_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$project_name'_HRD_RHEL' -PathType Container)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$project_name'_HRD_RHEL' -PathType Container)) {
 					Write-Host 'Created Sub Directory in Projects Folder for HRD-RHEL' -ForegroundColor Green
-					New-Item -Path $project_name\$project_name'_HRD_RHEL' -Type Directory | out-null
+					New-Item -Path $where_to_create\$project_name\$project_name'_HRD_RHEL' -Type Directory | out-null
 				}	else {
-				    Write-Host $project_name\$project_name'_HRD_RHEL' $folder_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$project_name'_HRD_RHEL' $folder_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$project_name'_HRD_RHEL\Evidence' -PathType Container)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$project_name'_HRD_RHEL\Evidence' -PathType Container)) {
 					Write-Host 'Created Evidence folder in Projects Sub Directory' -ForegroundColor Green
-					New-Item -Path $project_name\$project_name'_HRD_RHEL\Evidence' -Type Directory | out-null
+					New-Item -Path $where_to_create\$project_name\$project_name'_HRD_RHEL\Evidence' -Type Directory | out-null
 				}	else {
-				    Write-Host $project_name\$project_name'_HRD_RHEL\Evidence' $folder_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$project_name'_HRD_RHEL\Evidence' $folder_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$project_name'_HRD_RHEL\Recieved_Script_Outputs' -PathType Container)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$project_name'_HRD_RHEL\Recieved_Script_Outputs' -PathType Container)) {
 					Write-Host 'Created folder for Recieved Script Outputs in Projects Sub Directory' -ForegroundColor Green
-					New-Item -Path $project_name\$project_name'_HRD_RHEL\Recieved_Script_Outputs' -Type Directory | out-null
+					New-Item -Path $where_to_create\$project_name\$project_name'_HRD_RHEL\Recieved_Script_Outputs' -Type Directory | out-null
 				}	else {
-				    Write-Host $project_name\$project_name'_HRD_RHEL\Recieved_Script_Outputs' $folder_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$project_name'_HRD_RHEL\Recieved_Script_Outputs' $folder_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$client_firm_name'_'$project_name'_HRD_RHEL_'$year'_01.docx' -PathType Leaf)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$client_firm_name'_'$project_name'_HRD_RHEL_'$year'_01.docx' -PathType Leaf)) {
 					Write-Host 'Copied template file in Project Directory' -ForegroundColor Green
-					Copy-Item $templates_path'\HRD_RHEL.docx' $project_name\$client_firm_name'_'$project_name'_HRD_RHEL_'$year'_01.docx' | out-null
+					Copy-Item $templates_path'\HRD_RHEL.docx' $where_to_create\$project_name\$client_firm_name'_'$project_name'_HRD_RHEL_'$year'_01.docx' | out-null
 				}	else {
-				    Write-Host $project_name\$client_firm_name'_'$project_name'_HRD_RHEL_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$client_firm_name'_'$project_name'_HRD_RHEL_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
 				}
-			 if ( -not (Test-Path -Path $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_HRD_RHEL_'$year'_01.docx' -PathType Leaf)) {
+			 if ( -not (Test-Path -Path $where_to_create\$project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_specify-type_HRD_RHEL_'$year'_01.docx' -PathType Leaf)) {
 					Write-Host 'Copied template file High Alert in Project Directory' -ForegroundColor Green
-					Copy-Item $templates_path'\HIGH_ALERT.docx' $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_HRD_RHEL_'$year'_01.docx' | out-null
+					Copy-Item $templates_path'\HIGH_ALERT.docx' $where_to_create\$project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_specify-type_HRD_RHEL_'$year'_01.docx' | out-null
 				}	else {
-				    Write-Host $project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_HRD_RHEL_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
+				    Write-Host $where_to_create\$project_name\$client_firm_name'_'$project_name'_HIGH_ALERT_specify-type_HRD_RHEL_'$year'_01.docx' $file_already_exists -ForegroundColor Magenta
 				}
          }		 
 		 'U' {
@@ -191,15 +198,16 @@ do
 				$month = read-host "Enter Month you want to be displayed in the template report (he)"
 				$client_firm_name_in_template = read-host "Enter Clients name you want to be displayed in the template report (he)"
 				$consultant_name = read-host "Enter a Consultant Name you want to be displayed in the template report (he)"
+				$project_name_t = read-host "Enter a Project Name you want to be displayed in the template report (he)"
 				$system_manager_name = read-host "Enter a Systems Manager Name you want to be displayed in the template report (he)"
-				$templates_copied_to_dst_path = $project_name # multi-folders: "C:\fso1*", "C:\fso2*"
+				#$templates_copied_to_dst_path = $where_to_create\$project_name # multi-folders: "C:\fso1*", "C:\fso2*"
 				$fileType = "*.docx"           # *.docx will take all .doc* files
 
 				$textToReplace = @{
 				# "TextToFind" = "TextToReplaceWith"
 				"DATE" = $date_today
 				"CONSULTANT_NAME" = $consultant_name
-				"PROJECT_NAME" = $project_name
+				"PROJECT_NAME" = $project_name_t
 				"YEAR" = $year
 				"MONTH" = $month
 				"SYSTEM_MANAGER" = $system_manager_name
@@ -279,7 +287,7 @@ do
 				}
 
 				$sw = [Diagnostics.Stopwatch]::StartNew()
-				Get-ChildItem -Path $templates_copied_to_dst_path -Recurse -Filter $fileType | ForEach-Object { 
+				Get-ChildItem -Path $where_to_create\$project_name -Recurse -Filter $fileType | ForEach-Object { 
 				  Write-Host "Processing \`"$($_.Name)\`"..." # - ForegroundColor Yellow
 				  $countr = processDoc
 				  Write-Host "$countr replacements made." # - ForegroundColor Cyan
